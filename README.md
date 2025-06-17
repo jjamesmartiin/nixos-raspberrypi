@@ -26,7 +26,7 @@ git clone git@github.com:jjamesmartiin/nixos-raspberrypi.git
 ```nix
   # emulate system to try to compile for rpi
   boot.binfmt.emulatedSystems = [ "aarch64-linux" "armv7l-linux" "armv6l-linux" ];
-  nix.settings.trusted-users = [ "jamesm" "root" ];
+  nix.settings.trusted-users = [ "@wheel" "root" ];
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 ```
 
