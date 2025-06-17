@@ -11,6 +11,40 @@ Provisions and manages Raspberry Pi firmware partition `/boot/firmware`. Partiti
 Supported boot methods: `kernelboot`, `uboot`.
 
 # How to use
+## Building the .img file for flashing
+### 1. Clone the repo
+```
+git clone git@github.com:jjamesmartiin/nixos-raspberrypi.git
+```
+
+### 2. Modify the flake.nix to have your SSH public key
+```nix
+# Replace `# YOUR SSH PUB KEY HERE #` with your SSH public key
+```
+
+### 2.5 Optional: Update your system to enable cross-compilation
+```nix
+  # emulate system to try to compile for rpi
+  boot.binfmt.emulatedSystems = [ "aarch64-linux" "armv7l-linux" "armv6l-linux" ];
+  nix.settings.trusted-users = [ "jamesm" "root" ];
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+```
+
+### 3. Build the image
+```bash
+# cd nixos-raspberrypi/ # from the root of the cloned repo
+nix build .#installerImages.rpi5
+```
+
+### 4. Decompress the image
+```bash
+zstd --decompress $(readlink result)/sd-image/nixos-installer-rpi5-kernelboot.img.zst -o ./nixos-rpi-$(date +%y%m%d).img
+```
+
+### 5. Flash the image to your SD card
+You can use the [Raspberry Pi Imager](https://www.raspberrypi.com/software/) or any other tool that supports flashing `.img` files to SD cards.
+- TIP: copy the image from the Nix enabled machine to windows to use Raspberry Pi Imager, or use something on Linux.
+
 
 ## Add flake input
 
